@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <logger name="org.springframework.boot.logging" level="DEBUG"/>
+    <logger name="org.springframework.web" level="DEBUG"/>
+    <logger name="org.springframework.integration" level="DEBUG"/>
+    <logger name="org.springframework.integration.channel" level="DEBUG"/>
+    <logger name="org.springframework.integration.handler" level="DEBUG"/>
+    <logger name="org.springframework.integration.http.support" level="DEBUG"/>
+    <logger name="org.springframework.integration.transformer" level="DEBUG"/>
+    <logger name="org.springframework.integration.router" level="DEBUG"/>
+    <logger name="org.springframework.integration.aggregator" level="DEBUG"/>
+    <logger name="org.springframework.integration.ws" level="DEBUG"/>
+    <logger name="org.springframework.integration.mapping" level="DEBUG"/>
+    <logger name="com.citi.esb.cache" level="DEBUG"/>
+    <logger name="org.springframework.ws.client.MessageTracing.sent" level="TRACE"/>
+    <logger name="org.springframework.ws.client.MessageTracing.received" level="TRACE"/>
+    <logger name="org.springframework.ws.server.MessageTracing" level="TRACE"/>
+     <logger name="com.citi.dashboard.interceptor" level="DEBUG"/>
+    <logger name="org.springframework.integration.jms.dsl" level="DEBUG"/>
+    <logger name="com.citi.esb.framework.integration.dsl" level="DEBUG"/>
+    <logger name="org.springframework.integration.dsl" level="DEBUG"/>
+    <logger name="org.slf4j" level="DEBUG"/>
+    <logger name="org.apache.logging.log4j" level="DEBUG"/>
+    <logger name="org.springframework.integration.handler.LoggingHandler" level="DEBUG"/>
+    <logger name="com.citi.dashboard.config.subflows" level="DEBUG"/>
+	<logger name="com.citi.dashboard.service.CustomerRegistrationStatusINQ" level="ERROR"/>
+</configuration>
