@@ -15,29 +15,45 @@ public class TestingApplicationTests {
 
 
   @Test
-  public void gatewayTestSuccess(){
+  public void ScatterGatherTestSuccess(){
 
-    String msg=scatterGatherService.echoGateway("Test");
+    String msg=scatterGatherService.scatterGatherFlow("Test");
     System.out.println(msg);
 
   }
   @Test
-  public void gatewayTestError(){
+  public void ScatterGatherTestError(){
 
     System.out.println("Sending Request that would cause error");
-    scatterGatherService.echoGateway("Error");
-
+    try{
+      scatterGatherService.scatterGatherFlow("Error");
+    }catch (Exception e){
+      e.printStackTrace();
+    }
   }
 
 
+  @Test
+  public void ScatterGatherInnerTestError(){
+
+    System.out.println("Sending Request that would cause error");
+    try{
+      scatterGatherService.scatterGatherInnerflow("Error");
+    }catch (Exception e){
+      e.printStackTrace();
+    }
+
+
+  }
 
   @Autowired ScatterGatherService scatterGatherService;
 
   @MessagingGateway
   public interface ScatterGatherService{
     @Gateway(requestChannel = "scatterGatherflow.input")
-    public String echoGateway(String msg);
+    public String scatterGatherFlow(String msg);
 
-
+    @Gateway(requestChannel = "scatterGatherInnerflow.input")
+    public String scatterGatherInnerflow(String msg);
   }
 }

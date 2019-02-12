@@ -19,7 +19,7 @@ public class ScatterGatherTest {
     return flow->flow.log()
         .scatterGather(s->s.applySequence(true).requiresReply(true)
             .recipient("transformer.input")
-            .recipient("scatterGatherInnerflow.input"), g->g.outputProcessor(this::processGroup))
+            .recipient("scatterGatherInnerflow.input"))
         .log()
         .bridge();
   }
