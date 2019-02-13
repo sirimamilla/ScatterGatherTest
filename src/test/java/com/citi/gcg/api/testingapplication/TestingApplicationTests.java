@@ -14,46 +14,56 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class TestingApplicationTests {
 
 
-  @Test
-  public void ScatterGatherTestSuccess(){
+    @Test
+    public void ScatterGatherTestSuccess() {
 
-    String msg=scatterGatherService.scatterGatherFlow("Test");
-    System.out.println(msg);
+        String msg = scatterGatherService.scatterGatherFlow("Test");
+        System.out.println(msg);
 
-  }
-  @Test
-  public void ScatterGatherTestError(){
-
-    System.out.println("Sending Request that would cause error");
-    try{
-      scatterGatherService.scatterGatherFlow("Error");
-    }catch (Exception e){
-      e.printStackTrace();
     }
-  }
 
+    @Test
+    public void ScatterGatherTestAggregatorError() {
 
-  @Test
-  public void ScatterGatherInnerTestError(){
+        String msg = scatterGatherService.scatterGatherFlow("Test1");
+        System.out.println(msg);
 
-    System.out.println("Sending Request that would cause error");
-    try{
-      scatterGatherService.scatterGatherInnerflow("Error");
-    }catch (Exception e){
-      e.printStackTrace();
+    }
+
+    @Test
+    public void ScatterGatherTestError() {
+
+        System.out.println("Sending Request that would cause error");
+        try {
+            scatterGatherService.scatterGatherFlow("Error");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
-  }
+    @Test
+    public void ScatterGatherInnerTestError() {
 
-  @Autowired ScatterGatherService scatterGatherService;
+        System.out.println("Sending Request that would cause error");
+        try {
+            scatterGatherService.scatterGatherInnerflow("Error");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-  @MessagingGateway
-  public interface ScatterGatherService{
-    @Gateway(requestChannel = "scatterGatherflow.input")
-    public String scatterGatherFlow(String msg);
 
-    @Gateway(requestChannel = "scatterGatherInnerflow.input")
-    public String scatterGatherInnerflow(String msg);
-  }
+
+    @Autowired
+    ScatterGatherService scatterGatherService;
+
+    @MessagingGateway
+    public interface ScatterGatherService {
+        @Gateway(requestChannel = "scatterGatherflow.input")
+        public String scatterGatherFlow(String msg);
+
+        @Gateway(requestChannel = "scatterGatherInnerflow.input")
+        public String scatterGatherInnerflow(String msg);
+    }
 }
