@@ -22,37 +22,6 @@ public class TestingApplicationTests {
 
     }
 
-    @Test
-    public void ScatterGatherTestAggregatorError() {
-
-        String msg = scatterGatherService.scatterGatherFlow("Test1");
-        System.out.println(msg);
-
-    }
-
-    @Test
-    public void ScatterGatherTestError() {
-
-        System.out.println("Sending Request that would cause error");
-        try {
-            scatterGatherService.scatterGatherFlow("Error");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    @Test
-    public void ScatterGatherInnerTestError() {
-
-        System.out.println("Sending Request that would cause error");
-        try {
-            scatterGatherService.scatterGatherInnerflow("Error");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 
 
     @Autowired

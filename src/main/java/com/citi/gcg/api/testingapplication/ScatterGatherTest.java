@@ -11,34 +11,48 @@ import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.support.MessageBuilder;
 
 import java.util.List;
-import java.util.concurrent.Executors;
 
 @Configuration
 @EnableIntegration
 public class ScatterGatherTest {
 
 
-  @Bean
+    private static String transform(Object m) {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "recipient1 Response";
+    }
+
+    @Bean
   public IntegrationFlow scatterGatherflow(){
+
     return flow->flow.log()
         .scatterGather(s->s.applySequence(true).requiresReply(true)
             .recipient("transformer.input")
-            .recipient("scatterGatherInnerflow.input"), g->g.outputProcessor(this::processGroup), sg->sg.errorChannel("scatterGatherErrorChannel"))
+            .recipient("scatterGatherInnerflow.input")
+                , g->g.outputProcessor(this::processGroup)
+                , sg->sg.errorChannel("scatterGatherErrorChannel").gatherTimeout(1000)
+        )
         .log()
         .bridge();
   }
 
   @Bean IntegrationFlow transformer(){
     return flow->flow.log()
-        .transform(m->"recipient1 Response");
+        .transform(ScatterGatherTest::transform);
   }
+
+
 
   public String processGroup(MessageGroup group){
     String result=null;
     for(Message message: group.getMessages()) {
       if (message.getPayload() instanceof List) {
         if ("Test1".equals(((List<String>) message.getPayload()).get(1)))
-          throw new ClassCastException("Intentional Error Thrown!!!");
+          throw new RuntimeException("Intentional Error Thrown!!!");
       }
       if (message.getPayload() instanceof String) {
         result = (String) message.getPayload();
@@ -51,10 +65,12 @@ public class ScatterGatherTest {
 
   @Bean
   public IntegrationFlow scatterGatherInnerflow(){
-    return f->f.channel(channels -> channels.executor(Executors.newWorkStealingPool()))
+    return f->f
         .scatterGather(s->s.applySequence(true).requiresReply(true)
             .recipient("transformer.input")
-            .recipient("scatterGatherTransformer.input"), null, sg->sg.errorChannel("scatterGatherErrorChannel"));
+            .recipient("scatterGatherTransformer.input"), null
+                , sg->sg.errorChannel("scatterGatherErrorChannel").gatherTimeout(1000)
+        );
   }
 
   @ServiceActivator(inputChannel = "scatterGatherErrorChannel")
@@ -66,7 +82,7 @@ public class ScatterGatherTest {
 
   @Bean
   public IntegrationFlow scatterGatherTransformer(){
-    return f->f.channel(channels -> channels.executor(Executors.newWorkStealingPool()))
+    return f->f
         .transform(this::MessageTransformer);
   }
 
