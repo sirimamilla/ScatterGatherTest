@@ -10,19 +10,13 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.support.MessageBuilder;
 
-import java.util.List;
-
 @Configuration
 @EnableIntegration
 public class ScatterGatherTest {
 
 
     private static String transform(Object m) {
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         return "recipient1 Response";
     }
 
@@ -50,10 +44,7 @@ public class ScatterGatherTest {
   public String processGroup(MessageGroup group){
     String result=null;
     for(Message message: group.getMessages()) {
-      if (message.getPayload() instanceof List) {
-        if ("Test1".equals(((List<String>) message.getPayload()).get(1)))
-          throw new RuntimeException("Intentional Error Thrown!!!");
-      }
+
       if (message.getPayload() instanceof String) {
         result = (String) message.getPayload();
       }
@@ -90,7 +81,7 @@ public class ScatterGatherTest {
     if ("Test".equals(msg)||"Test1".equals(msg)){
       return msg;
     }else {
-      throw new RuntimeException("Throw Error");
+        return "other";
     }
   }
 
