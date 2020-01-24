@@ -14,15 +14,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class TestingApplicationTests {
 
 
-    @Test(timeout = 3000)
-    public void ScatterGather3rdLevelSuccess() {
 
-        String msg = scatterGatherService.scatterGather3rdLevelflow("Test");
-        System.out.println(msg);
 
-    }
-
-    @Test(timeout = 3000)
+    @Test(timeout = 10000)
     public void ScatterGather2ndLevelSuccess() {
 
         String msg = scatterGatherService.scatterGatherFlow("Test");
@@ -30,13 +24,7 @@ public class TestingApplicationTests {
 
     }
 
-    @Test(timeout = 3000)
-    public void scatterGather1stLevelTestSuccess() {
 
-        String msg = scatterGatherService.scatterGatherInnerflow("Test");
-        System.out.println(msg);
-
-    }
 
 
     @Autowired
@@ -47,10 +35,6 @@ public class TestingApplicationTests {
         @Gateway(requestChannel = "scatterGatherflow.input")
         public String scatterGatherFlow(String msg);
 
-        @Gateway(requestChannel = "scatterGatherInnerflow.input")
-        public String scatterGatherInnerflow(String msg);
 
-        @Gateway(requestChannel = "scatterGather3rdLevelflow.input")
-        public String scatterGather3rdLevelflow(String msg);
     }
 }
