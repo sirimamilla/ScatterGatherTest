@@ -19,6 +19,20 @@ public class ScatterGatherTest {
 
         return "recipient1 Response";
     }
+  @Bean
+  public IntegrationFlow scatterGather3rdLevelflow(){
+
+    return flow->flow.log()
+            .scatterGather(s->s.applySequence(true).requiresReply(true)
+                            .recipient("transformer.input")
+                            .recipient("scatterGatherflow.input")
+                    , g->g.outputProcessor(this::processGroup)
+                    , sg->sg.errorChannel("scatterGatherErrorChannel").gatherTimeout(1000)
+            )
+            .log()
+            .bridge();
+  }
+
 
     @Bean
   public IntegrationFlow scatterGatherflow(){
